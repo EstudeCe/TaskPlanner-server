@@ -1,5 +1,7 @@
+import ScheduleRepository from "../../repositories/ScheduleRepository";
+
 export async function findAllSchedules() {
-  return {
-    message: "findAll",
-  };
+  const allSchedules = await ScheduleRepository.findAll();
+
+  return allSchedules;
 }

@@ -11,19 +11,23 @@ class ScheduleController {
   }
 
   async create(request: Request, response: Response) {
-    const { name } = request.body;
+    const { name, color } = request.body;
 
     if (!name) {
       return response.status(400).json({ error: "Name is required" });
     }
 
-    const createSchedule = await createSchedules(name);
+    if (!color) {
+      return response.status(400).json({ error: "color is required" });
+    }
+
+    const createSchedule = await createSchedules(name, color);
 
     return response.json(createSchedule);
   }
 
   async update(request: Request, response: Response) {
-    const { name } = request.body;
+    const { name, color } = request.body;
     const { id } = request.params;
 
     if (!name) {
@@ -34,7 +38,11 @@ class ScheduleController {
       return response.status(400).json({ error: "ID is required" });
     }
 
-    const newSchedule = await updateSchedules(name, id);
+    if (!color) {
+      return response.status(400).json({ error: "Color is required" });
+    }
+
+    const newSchedule = await updateSchedules(id, name, color);
 
     return response.json(newSchedule);
   }
