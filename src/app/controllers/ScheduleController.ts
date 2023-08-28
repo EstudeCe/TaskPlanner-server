@@ -1,21 +1,28 @@
 import { Request, Response } from "express";
+import { findAllSchedules } from "../useCases/Schedules/findAll";
+import { createSchedules } from "../useCases/Schedules/create";
+import { deleteSchedules } from "../useCases/Schedules/delete";
+import { updateSchedules } from "../useCases/Schedules/update";
 
 class ScheduleController {
-  findAll(request: Request, response: Response) {
-    return response.json({ message: "findAll" });
+  async findAll(request: Request, response: Response) {
+    const allSchedules = await findAllSchedules();
+    return response.json(allSchedules);
   }
 
-  create(request: Request, response: Response) {
+  async create(request: Request, response: Response) {
     const { name } = request.body;
 
     if (!name) {
       return response.status(400).json({ error: "Name is required" });
     }
 
-    return response.json({ message: "create", name });
+    const createSchedule = await createSchedules(name);
+
+    return response.json(createSchedule);
   }
 
-  update(request: Request, response: Response) {
+  async update(request: Request, response: Response) {
     const { name } = request.body;
     const { id } = request.params;
 
@@ -27,15 +34,19 @@ class ScheduleController {
       return response.status(400).json({ error: "ID is required" });
     }
 
-    return response.json({ message: "update", name, id });
+    const newSchedule = await updateSchedules(name, id);
+
+    return response.json(newSchedule);
   }
 
-  delete(request: Request, response: Response) {
+  async delete(request: Request, response: Response) {
     const { id } = request.body;
 
     if (!id) {
       return response.status(400).json({ error: "ID is required" });
     }
+
+    await deleteSchedules(id);
 
     return response.sendStatus(204);
   }
