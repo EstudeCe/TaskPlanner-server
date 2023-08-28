@@ -1,11 +1,8 @@
 import { Request, Response } from "express";
-import { findAllSchedule } from "../useCases/Schedules/findAll";
 
 class ScheduleController {
-  async findAll(request: Request, response: Response) {
-    const allSchedules = await findAllSchedule();
-
-    return response.json(allSchedules);
+  findAll(request: Request, response: Response) {
+    return response.json({ message: "findAll" });
   }
 
   create(request: Request, response: Response) {
